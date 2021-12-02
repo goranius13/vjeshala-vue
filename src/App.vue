@@ -98,7 +98,8 @@ export default {
 
       axios
         .get(
-          "http://localhost:3000/zadanaRijec/" + Math.floor(Math.random() * 99)
+          "http://localhost:3000/katalogRijeci/" +
+            Math.floor(Math.random() * 99)
         )
         .then((response) => {
           this.rijecZaPogoditi.rijecZaUsporedbu = response.data.rijec;

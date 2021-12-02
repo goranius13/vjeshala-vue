@@ -1,4 +1,4 @@
-{"zadanaRijec": [
+{"katalogRijeci": [
   { "id": 0, "rijec": "TULJAN", "kategorija": "ŽIVOTINJA" },
   { "id": 1, "rijec": "MEDUZA", "kategorija": "ŽIVOTINJA" },
   { "id": 2, "rijec": "DABAR", "kategorija": "ŽIVOTINJA" },
