@@ -16,31 +16,24 @@ import axios from "axios";
 
 export default {
   name: "Abeceda",
-  props: {
-    jeliKraj: Boolean,
-    resetirajAbecedu: Boolean,
-  },
   data() {
     return {
       abeceda: [],
     };
-  },
-  watch: {
-    jeliKraj: function () {
-      this.postaviStanjeAbecede(true);
-    },
-    resetirajAbecedu: function () {
-      this.postaviStanjeAbecede(false);
-    },
   },
   methods: {
     odigranPotez(indeks) {
       this.abeceda[indeks].odigrano = true;
       this.$emit("odigran-potez", this.abeceda[indeks].slovo);
     },
-    postaviStanjeAbecede(stanje) {
+    onemoguciAbecedu() {
       for (let i = 0; i < this.abeceda.length; i++) {
-        this.abeceda[i].odigrano = stanje;
+        this.abeceda[i].odigrano = true;
+      }
+    },
+    resetirajStanjeAbecede() {
+      for (let i = 0; i < this.abeceda.length; i++) {
+        this.abeceda[i].odigrano = false;
       }
     },
   },
@@ -51,20 +44,3 @@ export default {
   },
 };
 </script>
-
-<style>
-button {
-  margin-top: 20px;
-  margin-left: 10px;
-  border: none;
-  background-color: #1e95ea;
-  color: white;
-  height: 40px;
-  width: 70px;
-  font-size: 14px;
-}
-
-.disabledButton {
-  background-color: #d8d8d8;
-}
-</style>

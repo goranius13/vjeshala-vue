@@ -21,18 +21,11 @@
         />
       </div>
       <div class="md:flex">
-        <button
-          class="rijec"
-          v-on:click="pogodiRijec()"
-          :disabled="jeliKraj"
-          :class="{ disabledButton: jeliKraj }"
-        >
-          Pogodi
-        </button>
-        <button @click="resetiraj()">Resetiraj</button>
+        <button class="wide-button" v-on:click="pogodiRijec()">Pogodi</button>
+        <button class="wide-button" @click="resetiraj()">Resetiraj</button>
       </div>
     </div>
-    <h2>{{ pobjedaIliPoraz }}</h2>
+    <h2 class="mt-4">{{ rezultatIgre }}</h2>
   </div>
 </template>
 
@@ -41,13 +34,12 @@ export default {
   name: "RijecZaPogoditi",
   props: {
     rijecZaPogoditi: Object,
-    jeliKraj: Boolean,
-    pobjedaIliPoraz: String,
     osvjeziKomponentu: Number,
   },
   data() {
     return {
       kompletnaRijecZaPogoditi: "",
+      rezultatIgre: "",
     };
   },
   watch: {
@@ -63,34 +55,15 @@ export default {
     pogodiRijec() {
       this.$emit("pogodi-rijec", this.kompletnaRijecZaPogoditi);
     },
+    prikaziRezultat(pobjeda) {
+      this.rezultatIgre = pobjeda ? "Pobjeda!!!" : "Poraz :(";
+    },
   },
 };
 </script>
 
 <style>
-.slova {
-  margin-top: 20px;
-  margin-left: 10px;
-  border: none;
-  background-color: #1e95ea;
-  color: white;
-  height: 40px;
-  width: 50px;
-  font-size: 14px;
-}
-
-.rijec {
-  margin-top: 20px;
-  margin-left: 10px;
-  border: none;
-  background-color: #1e95ea;
-  color: white;
-  height: 40px;
-  width: 70px;
-  font-size: 14px;
-}
-
-.disabledButton {
-  background-color: #d8d8d8;
+.wide-button {
+  width: 80px;
 }
 </style>

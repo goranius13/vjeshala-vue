@@ -6,9 +6,8 @@
 
         <div class="p-4">
           <RijecZaPogoditi
+            ref="rijecZaPogoditi"
             :rijecZaPogoditi="rijecZaPogoditi"
-            :jeliKraj="jeliKraj"
-            :pobjedaIliPoraz="pobjedaIliPoraz"
             :osvjeziKomponentu="osvjeziKomponentu"
             v-on:pogodi-rijec="pogodiRijec($event)"
             v-on:resetiraj="resetiraj()"
@@ -18,11 +17,7 @@
     </div>
 
     <div class="max-w-md mx-auto overflow-hidden md:max-w-4xl">
-      <Abeceda
-        :resetirajAbecedu="resetirajAbecedu"
-        :jeliKraj="jeliKraj"
-        v-on:odigran-potez="pogodiSlovo($event)"
-      />
+      <Abeceda ref="abeceda" v-on:odigran-potez="pogodiSlovo($event)" />
     </div>
   </div>
 </template>
@@ -44,20 +39,17 @@ export default {
     return inicijalnoStanje();
   },
   watch: {
-    vjesaloSlika: function () {
-      if (this.vjesaloSlika === 12) {
-        this.pobjedaIliPoraz = "Poraz :(";
-        this.rijecZaPogoditi.rijec.forEach((element) => {
-          element.jeliSlovoOdigrano = true;
-        });
-        this.jeliKraj = true;
+    vjesaloSlika: function (newValue) {
+      if (newValue === 12) {
+        this.krajIgreIPobjeda(false);
       }
     },
   },
   methods: {
     resetiraj() {
       this.pripremiRijecZaIgru();
-      Object.assign(this.$data, inicijalnoStanje(this.resetirajAbecedu));
+      Object.assign(this.$data, inicijalnoStanje());
+      this.$refs.abeceda.resetirajStanjeAbecede();
     },
     pogodiSlovo(slovo) {
       if (
@@ -73,7 +65,7 @@ export default {
             (odigrano) => odigrano === false
           ) === undefined
         ) {
-          this.pobjeda();
+          this.krajIgreIPobjeda(true);
         }
       } else {
         this.vjesaloSlika += 1;
@@ -84,14 +76,17 @@ export default {
       if (
         rijec.trim().toUpperCase() === this.rijecZaPogoditi.rijecZaUsporedbu
       ) {
-        this.pobjeda();
+        this.krajIgreIPobjeda(true);
       } else {
         this.vjesaloSlika += 1;
       }
     },
-    pobjeda() {
-      this.pobjedaIliPoraz = "Pobjeda!!!";
-      this.jeliKraj = true;
+    krajIgreIPobjeda(istina) {
+      this.$refs.abeceda.onemoguciAbecedu();
+      this.$refs.rijecZaPogoditi.prikaziRezultat(istina);
+      this.rijecZaPogoditi.odigrano.forEach((odigraniElement, indeks) => {
+        if (!odigraniElement) this.rijecZaPogoditi.odigrano[indeks] = true;
+      });
     },
     pripremiRijecZaIgru() {
       const regExZaDuplaSlova = /^LJ|^NJ|^DŽ/;
@@ -124,7 +119,7 @@ export default {
   },
 };
 
-function inicijalnoStanje(stanje) {
+function inicijalnoStanje() {
   return {
     vjesaloSlika: 0,
     rijecZaPogoditi: {
@@ -133,9 +128,6 @@ function inicijalnoStanje(stanje) {
       rijecZaUsporedbu: "",
       kategorija: "",
     },
-    pobjedaIliPoraz: "",
-    jeliKraj: false,
-    resetirajAbecedu: !stanje,
     osvjeziKomponentu: 0,
   };
 }
@@ -149,5 +141,21 @@ function inicijalnoStanje(stanje) {
   text-align: center;
   color: #282828;
   margin: 20px;
+}
+
+button {
+  margin-top: 20px;
+  margin-left: 10px;
+  border: none;
+  background-color: #1e95ea;
+  color: white;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
+  font-size: 14px;
+}
+
+.disabledButton {
+  background-color: #d8d8d8;
 }
 </style>
